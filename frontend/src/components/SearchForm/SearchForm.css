@@ -5,14 +5,14 @@
 }
 
 .search-form {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #ffffff;
+  padding: 1.75rem 2rem;
+  border-radius: 28px;
+  box-shadow: 0 18px 45px rgba(10, 36, 99, 0.18);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
   gap: 1.5rem;
-  align-items: end;
+  align-items: stretch;
 }
 
 .form-group {
@@ -28,16 +28,18 @@
 }
 
 .form-group input {
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  border: 1px solid #d8deed;
+  border-radius: 14px;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #f3f6ff;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #0a2463;
+  border-color: #2d4ea0;
+  box-shadow: 0 0 0 3px rgba(45, 78, 160, 0.15);
 }
 
 .form-group input::placeholder {
@@ -48,13 +50,16 @@
   background-color: #0a2463;
   color: white;
   border: none;
-  padding: 0.8rem 2rem;
-  border-radius: 4px;
+  padding: 0.2rem 2rem;
+  border-radius: 18px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .search-button:hover {
@@ -69,5 +74,6 @@
 
   .search-button {
     width: 100%;
+    padding: 0.9rem;
   }
 }
