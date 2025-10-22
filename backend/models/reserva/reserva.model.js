@@ -14,7 +14,7 @@ const schemaReserva = new mongoose.Schema({
     usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
     vuelo: { type: mongoose.Schema.Types.ObjectId, ref: 'Vuelo', required: true },
     
-    // Pasajeros (embedded)
+    // Pasajeros 
     pasajeros: [schemaPasajero],
     
     // Detalles de la reserva
