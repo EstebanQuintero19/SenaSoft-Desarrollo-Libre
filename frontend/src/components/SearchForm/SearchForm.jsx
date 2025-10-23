@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SearchForm.css';
 
 const SearchForm = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     origen: '',
     destino: '',
@@ -19,7 +22,7 @@ const SearchForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Buscando vuelos:', formData);
-    // Aquí se conectará con el backend más adelante
+    navigate('/discover');
   };
 
   return (
