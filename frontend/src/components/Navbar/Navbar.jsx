@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -11,7 +13,7 @@ const Navbar = () => {
         <div className="navbar-links">
           <a href="#reservas" className="navbar-link">Mis Reservas</a>
           <a href="#ayuda" className="navbar-link">Ayuda</a>
-          <button className="navbar-button">Iniciar Sesión</button>
+          <button className="navbar-button" type="button" onClick={() => navigate('/login')}>Iniciar Sesión</button>
         </div>
       </div>
     </nav>

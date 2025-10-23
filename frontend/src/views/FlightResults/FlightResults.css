@@ -1,0 +1,294 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+}
+
+.flight-results-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.flight-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem 4vw 4rem;
+  flex: 1;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: #eaf0fa;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(10, 42, 102, 0.08);
+}
+
+.header-content h2 {
+  margin: 0;
+  color: #0a2a66;
+  font-size: 1.8rem;
+}
+
+.header-content p {
+  margin: 0.25rem 0 0;
+  color: #4a5b7d;
+}
+
+.modify-search-btn {
+  background: #0a2a66;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modify-search-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(10, 42, 102, 0.2);
+}
+
+/* MAIN LAYOUT */
+.flight-content {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) 1fr;
+  align-items: stretch;
+  gap: 2rem;
+}
+
+/* SIDEBAR */
+.filters {
+  background: white;
+  border-radius: 16px;
+  padding: 1.75rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  height: fit-content;
+}
+
+.filters h3 {
+  color: #0a2a66;
+  margin-bottom: 1.25rem;
+}
+
+.filters p {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+.search-input {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid #ccd7e6;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #0a2a66;
+  box-shadow: 0 0 0 3px rgba(10, 42, 102, 0.12);
+}
+
+/* RESULTS */
+.results {
+  flex: 1;
+  background: transparent;
+}
+
+.results h2 {
+  color: #0a2a66;
+  margin-bottom: 0.2rem;
+}
+
+.results p {
+  color: gray;
+  margin-bottom: 1.5rem;
+}
+
+/* FLIGHT CARD */
+.flight-card {
+  background: white;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+  gap: 1rem;
+}
+
+.flight-info {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.route {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.city {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0a2a66;
+}
+
+.hours {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: #333;
+}
+
+.details p {
+  font-weight: 600;
+  color: #2c3551;
+  margin: 0;
+}
+
+.details span {
+  color: gray;
+  font-size: 0.9rem;
+}
+
+/* PRICE */
+.flight-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.flight-price h3 {
+  color: #0a2a66;
+  margin: 0;
+}
+
+.select-btn {
+  background: #0a2a66;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.select-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(10, 42, 102, 0.2);
+}
+
+/* Estilos para el modal de confirmación */
+.confirmation-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirmation-modal {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.flight-details {
+  margin: 20px 0;
+  line-height: 1.6;
+}
+
+.flight-details p {
+  margin: 8px 0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.confirm-btn, .cancel-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.confirm-btn {
+  background: #007bff;
+  color: white;
+}
+
+.cancel-btn {
+  background: #f0f0f0;
+  color: #333;
+}
+
+@media (max-width: 992px) {
+  .flight-content {
+    grid-template-columns: 1fr;
+  }
+
+  .filters {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    justify-content: space-between;
+  }
+
+  .filters input {
+    max-width: 320px;
+  }
+
+  .flight-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .flight-price {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 600px) {
+  .flight-container {
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .flight-info {
+    gap: 1.25rem;
+  }
+}

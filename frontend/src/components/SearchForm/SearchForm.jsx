@@ -1,28 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ciudadesColombia } from '../../data/ciudadesData';
 import './SearchForm.css';
 
 const SearchForm = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    origen: '',
-    destino: '',
-    fechas: ''
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  const [origen, setOrigen] = useState('');
+  const [destino, setDestino] = useState('');
+  const [fecha, setFecha] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Buscando vuelos:', formData);
-    navigate('/discover');
+    navigate('/discover', { 
+      state: { origen, destino, fecha }
+    });
   };
 
   return (
@@ -31,36 +23,44 @@ const SearchForm = () => {
         <div className="form-group">
           <label htmlFor="origen">Origen</label>
           <input
-            type="text"
-            id="origen"
-            name="origen"
-            placeholder="Ciudad de Origen"
-            value={formData.origen}
-            onChange={handleChange}
+            value={origen}
+            onChange={(e) => setOrigen(e.target.value)}
+            list="origenes-lista"
+            placeholder="Ciudad origen"
+            required
           />
+          <datalist id="origenes-lista">
+            {ciudadesColombia.map(ciudad => (
+              <option key={`origen-${ciudad.codigoAeropuerto}`} 
+                      value={`${ciudad.nombre} (${ciudad.codigoAeropuerto})`} />
+            ))}
+          </datalist>
         </div>
 
         <div className="form-group">
           <label htmlFor="destino">Destino</label>
           <input
-            type="text"
-            id="destino"
-            name="destino"
-            placeholder="Ciudad de Destino"
-            value={formData.destino}
-            onChange={handleChange}
+            value={destino}
+            onChange={(e) => setDestino(e.target.value)}
+            list="destinos-lista"
+            placeholder="Ciudad destino"
+            required
           />
+          <datalist id="destinos-lista">
+            {ciudadesColombia.map(ciudad => (
+              <option key={`destino-${ciudad.codigoAeropuerto}`} 
+                      value={`${ciudad.nombre} (${ciudad.codigoAeropuerto})`} />
+            ))}
+          </datalist>
         </div>
 
         <div className="form-group">
-          <label htmlFor="fechas">Fechas</label>
-          <input
-            type="date"
-            id="fechas"
-            name="fechas"
-            placeholder="Ida y Vuelta"
-            value={formData.fechas}
-            onChange={handleChange}
+          <label htmlFor="fecha">Fecha</label>
+          <input 
+            type="date" 
+            value={fecha} 
+            onChange={(e) => setFecha(e.target.value)} 
+            required 
           />
         </div>
 

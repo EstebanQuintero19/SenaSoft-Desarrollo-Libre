@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import './Discover.css';
@@ -129,7 +130,9 @@ const renderCalendarDays = ({
   });
 };
 
-const Discover = () => {
+const Discover = ({ origin, destination }) => {
+  const navigate = useNavigate();
+  const { state } = useLocation();
   const today = useMemo(() => new Date(), []);
   const minSelectableDate = useMemo(
     () => new Date(today.getFullYear(), today.getMonth(), today.getDate()),
@@ -209,6 +212,23 @@ const Discover = () => {
     });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const passengers = Number(formData.get('pasajeros')) || 1;
+
+    const payload = {
+      origin,
+      destination,
+      passengers,
+      tripType,
+      selectedDates: selectedDates.map((date) => (date ? date.toISOString() : null))
+    };
+
+    navigate('/flights', { state: payload });
+  };
+
   return (
     <div className="discover-page">
       <Navbar />
@@ -240,7 +260,7 @@ const Discover = () => {
             </div>
 
             <div className="travel-content">
-              <form className="travel-form">
+              <form className="travel-form" onSubmit={handleSubmit}>
                 <div className="travel-grid">
                   <div className="travel-field">
                     <label htmlFor="origen">Origen</label>
@@ -249,6 +269,8 @@ const Discover = () => {
                       id="origen"
                       name="origen"
                       placeholder="Bogotá (COL)"
+                      value={origin}
+                      readOnly
                     />
                   </div>
 
@@ -259,6 +281,8 @@ const Discover = () => {
                       id="destino"
                       name="destino"
                       placeholder="Medellín (COL)"
+                      value={destination}
+                      readOnly
                     />
                   </div>
 
