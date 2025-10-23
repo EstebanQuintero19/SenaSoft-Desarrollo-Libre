@@ -94,21 +94,13 @@ export default function FlightResults() {
   );
 
   const handleSelect = (flight) => {
-    const isAuthenticated = localStorage.getItem('authToken');
+    const confirmSelection = window.confirm(
+      `¿Confirmas la selección del vuelo ${flight.airline} ${flight.flightNumber}?`
+    );
     
-    if (!isAuthenticated) {
-      localStorage.setItem('pendingFlight', JSON.stringify(flight));
-      navigate('/login', { 
-        state: { 
-          from: '/flights',
-          message: 'Por favor inicia sesión para reservar este vuelo'
-        }
-      });
-      return;
+    if (confirmSelection) {
+      navigate('/passenger', { state: { flight } });
     }
-    
-    setSelectedFlight(flight);
-    setShowConfirmationModal(true);
   };
 
   return (

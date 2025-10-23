@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MdAlternateEmail } from 'react-icons/md';
 import { FaLock } from 'react-icons/fa';
-import PaymentModal from '../ModalPayments/PaymentModal.jsx';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './main.css';
 
 const DEFAULT_USERS = [
@@ -12,14 +12,13 @@ const DEFAULT_USERS = [
   }
 ];
 
-function Login({ onNavigate }) {
+function Login({ onNavigate, navigate }) {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -33,11 +32,9 @@ function Login({ onNavigate }) {
     setError('');
     setLoading(true);
 
-    // Simular delay de red
     await new Promise(resolve => setTimeout(resolve, 500));
 
     try {
-      // Obtener usuarios del localStorage
       const usersJSON = localStorage.getItem('users');
       let users = [];
 
@@ -57,17 +54,24 @@ function Login({ onNavigate }) {
         localStorage.setItem('users', JSON.stringify(DEFAULT_USERS));
       }
 
-      // Buscar usuario por email y password
       const user = users.find(u => 
         u.email === formData.email && u.password === formData.password
       );
 
       if (user) {
-        // Login exitoso
         const { password, ...userWithoutPassword } = user;
         localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
-        alert(`¡Bienvenido ${user.nombre}!`);
-        setFormData({ email: '', password: '' });
+        localStorage.setItem('authToken', 'mock-token-' + Date.now());
+        
+        // Redirección inteligente
+        const { state } = location;
+        if (state?.from === '/flights' && state?.flightData) {
+          // Viene de selección de vuelo
+          navigate('/passenger', { state: { flight: state.flightData } });
+        } else {
+          // Viene de otra parte (vista principal)
+          navigate(state?.from || '/discover');
+        }
       } else {
         setError('Credenciales inválidas. Email o contraseña incorrectos.');
       }
@@ -137,32 +141,8 @@ function Login({ onNavigate }) {
             <span>No tienes Cuenta?</span>
             <a onClick={onNavigate}>Registrate</a>
           </div>
-
-          {/* Botón para abrir modal de pago (demo) */}
-          <button 
-            type="button" 
-            onClick={() => setShowPaymentModal(true)}
-            style={{
-              marginTop: '20px',
-              padding: '12px',
-              background: '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontWeight: '600'
-            }}
-          >
-            💳 Probar Pago de Tickets
-          </button>
         </form>
         </div>
-
-        {/* Modal de Pago */}
-        <PaymentModal 
-          isOpen={showPaymentModal} 
-          onClose={() => setShowPaymentModal(false)} 
-        />
       </div>
     </div>
   );

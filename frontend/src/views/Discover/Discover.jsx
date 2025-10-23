@@ -214,8 +214,10 @@ const Discover = ({ origin, destination }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    
     const formData = new FormData(event.currentTarget);
+    const origin = formData.get('origen') || 'Bogotá (COL)';
+    const destination = formData.get('destino') || 'Medellín (COL)';
     const passengers = Number(formData.get('pasajeros')) || 1;
 
     const payload = {

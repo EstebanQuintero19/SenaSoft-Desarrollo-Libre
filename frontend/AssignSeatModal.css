@@ -116,3 +116,18 @@
   background-color: #4caf50;
   color: white;
 }
+
+/* Resumen de la reserva */
+.reservation-summary {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.reservation-summary p {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 4px;
+}
