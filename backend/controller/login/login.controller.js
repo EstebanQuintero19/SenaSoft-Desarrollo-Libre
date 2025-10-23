@@ -9,12 +9,7 @@ const login = async (req, res) => {
     }
 
     try {
-        const usuario = await Usuario.findOne({
-            $or: [
-                ...(cedula ? [{ cedula }] : []),
-                ...(email ? [{ email }] : [])
-            ]
-        }).select('+password');
+        const usuario = await Usuario.findOne({cedula:cedula});
 
         if (!usuario) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
@@ -94,4 +89,13 @@ const register = async (req, res) => {
     }
 };
 
-module.exports = { login, register };
+const getUsers = async(req,res)=>{
+    try {
+        const users = Usuario.find()
+        res.json(users)
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+module.exports = { login, register, getUsers};

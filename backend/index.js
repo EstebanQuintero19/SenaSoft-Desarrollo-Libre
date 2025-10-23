@@ -13,6 +13,7 @@ app.use('/api', require('./routes/login/login.routes.js'))
 app.use('/api', require('./routes/reservas/reserva.routes.js'))
 app.use('/api', require('./routes/aviones/avion.routes.js'))
 app.use('/api', require('./routes/vuelos/vuelos.routes.js'))
+app.use('/api', require('./routes/ciudades/ciudad.routes.js'))
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

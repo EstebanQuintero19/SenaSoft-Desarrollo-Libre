@@ -3,54 +3,27 @@ const Vuelo = require('../../models/vuelos/vuelo.model');
 const Ruta = require('../../models/rutas/ruta.model');
 const { generarRutasDesdeCiudades } = require('../rutas/ruta.controller');
 
-const crearVuelo = async(req,res) => {
-    const session = await mongoose.startSession();
+// Create flight
+const crearVuelo = async (req, res) => {
+    
     try {
-        const {
-            numeroVuelo,
-            avion,
-            fechaSalida,
-            fechaLlegada,
-            precioEstandar,
-            estado = 'Programado',
-            puertaEmbarque,
-            observaciones
-        } = req.body;
+        const { numeroVuelo, avion, fechaSalida, fechaLlegada, precioEstandar, estado = 'Programado', puertaEmbarque, observaciones } = req.body;
 
-        // Validar campos requeridos
-        if (!numeroVuelo || !avion || !fechaSalida || !fechaLlegada || !precioEstandar) {
-            return res.status(400).json({ 
-                message: 'Faltan campos requeridos' 
-            });
+        if (!numeroVuelo || !avion || !fechaSalida || !fechaLlegada || precioEstandar == null) {
+            return res.status(400).json({ message: 'Missing required fields' });
         }
 
-        // Obtener ruta aleatoria no usada para la fecha
-        const fecha = new Date(fechaSalida);
-        const inicio = new Date(fecha.setHours(0,0,0,0));
-        const fin = new Date(fecha.setHours(23,59,59,999));
+        const hasRoutes = await Ruta.countDocuments() > 0;
+        if (!hasRoutes) await generarRutasDesdeCiudades();
 
-        // Encontrar rutas ya usadas ese día
-        const rutasUsadas = await Vuelo.distinct('ruta', {
-            fechaSalida: { $gte: inicio, $lte: fin }
-        });
+        const [availableRoute] = await Ruta.aggregate([
+            {$sample: {size: 1}}
+        ])
 
-        // Obtener una ruta aleatoria no usada
-        const rutaDisponible = await Ruta.aggregate([
-            { $match: { _id: { $nin: rutasUsadas } } },
-            { $sample: { size: 1 } }
-        ]);
 
-        if (!rutaDisponible.length) {
-            return res.status(409).json({
-                message: 'No hay rutas disponibles para esta fecha'
-            });
-        }
-
-        session.startTransaction();
-
-        const nuevoVuelo = new Vuelo({
+        const vuelo = await Vuelo.create([{
             numeroVuelo,
-            ruta: rutaDisponible[0]._id,
+            ruta: availableRoute._id,
             avion,
             fechaSalida,
             fechaLlegada,
@@ -58,25 +31,29 @@ const crearVuelo = async(req,res) => {
             estado,
             puertaEmbarque,
             observaciones
-        });
-
-        await nuevoVuelo.save({ session });
-        await session.commitTransaction();
-
-        return res.status(201).json({
-            message: 'Vuelo creado con éxito',
-            data: nuevoVuelo
-        });
+        }]);
+         console.log('contenido: ', vuelo)
+        return res.status(201).json({ message: 'Flight created', data: vuelo[0] });
 
     } catch (error) {
-        await session.abortTransaction().catch(() => {});
-        console.error('Error al crear vuelo:', error.message);
-        return res.status(500).json({
-            message: 'Error interno al crear el vuelo',
-            error: error.message
-        });
-    } finally {
-        session.endSession();
+        console.log('no llegó')
+        return res.status(500).json({ message: 'Error interno del servidor: ', error: error.message });
     }
-}
-module.exports={crearVuelo}
+};
+
+// Get all flights
+const obtenerVuelos = async (req, res) => {
+    try {
+        const vuelos = await Vuelo.find()
+        
+        return res.status(200).json({ data: vuelos });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error fetching flights', error: error.message });
+    }
+};
+
+
+module.exports = { 
+    crearVuelo, 
+    obtenerVuelos, 
+};

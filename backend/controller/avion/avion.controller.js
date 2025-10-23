@@ -19,9 +19,7 @@ const crearAvion = async(req,res)=>{
 
 const obtenerAvinones = async(req,res)=>{
     try {
-        console.log('Aqui voy')
         const aviones = await Avion.find()
-        console.log('Estoy buscando...')
         if(!aviones)return res.status(404).json('No se pudieron obtener los Aviones.')
         res.status(201).json({message: 'Aviones obtenidos con extio.', data: aviones})
     } catch (error) {
